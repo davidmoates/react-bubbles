@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axiosWithAuth from "../axiosWithAuth";
 
 const initialColor = {
   color: "",
@@ -18,14 +18,31 @@ const ColorList = ({ colors, updateColors }) => {
 
   const saveEdit = e => {
     e.preventDefault();
-    // Make a put request to save your updated color
-    // think about where will you get the id from...
-    // where is is saved right now?
+    axiosWithAuth()
+      .put(`/colors/${colorToEdit.id}`, colorToEdit)
+      .then(() => {
+        axiosWithAuth()
+          .get('/colors')
+          .then(res => {updateColors(res.data)})
+          .catch(err => {console.error('ColorList Edit Update Error', err.message)})
+          setEditing(false);
+      })
+      .catch(err => {console.error('ColorList Edit Error', err.message)})
   };
 
   const deleteColor = color => {
-    // make a delete request to delete this color
+    axiosWithAuth()
+      .delete(`/colors/${color.id}`)
+      .then(() => {
+        axiosWithAuth()
+          .get('/api/colors')
+          .then(res => {updateColors(res.data)})
+          .catch(err => {console.error('ColorList Delete Update Error', err.message)})
+          setEditing(false);
+      })
+      .catch(err => {console.error('ColorList Delete Error', err.message)})
   };
+
 
   return (
     <div className="colors-wrap">
