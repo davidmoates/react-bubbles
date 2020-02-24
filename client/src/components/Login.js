@@ -14,8 +14,7 @@ const Login = props => {
     });
   };
 
-  const handleSubmit = e => {
-    e.preventDefault();
+  const handleSubmit = () => {
     axiosWithAuth()
       .post("/api/login", login)
       .then(res => {
@@ -30,7 +29,12 @@ const Login = props => {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          handleSubmit();
+        }}
+      >
         <input
           type="text"
           name="username"
