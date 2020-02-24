@@ -19,30 +19,41 @@ const ColorList = ({ colors, updateColors }) => {
   const saveEdit = e => {
     e.preventDefault();
     axiosWithAuth()
-      .put(`/colors/${colorToEdit.id}`, colorToEdit)
+      .put(`/api/colors/${colorToEdit.id}`, colorToEdit)
       .then(() => {
         axiosWithAuth()
-          .get('/colors')
-          .then(res => {updateColors(res.data)})
-          .catch(err => {console.error('ColorList Edit Update Error', err.message)})
-          setEditing(false);
+          .get("/api/colors")
+          .then(res => {
+            updateColors(res.data);
+          })
+          .catch(err => {
+            console.error("ColorList Edit Update Error", err.message);
+          });
+        setEditing(false);
       })
-      .catch(err => {console.error('ColorList Edit Error', err.message)})
+      .catch(err => {
+        console.error("ColorList Edit Error", err.message);
+      });
   };
 
   const deleteColor = color => {
     axiosWithAuth()
-      .delete(`/colors/${color.id}`)
+      .delete(`/api/colors/${color.id}`)
       .then(() => {
         axiosWithAuth()
-          .get('/api/colors')
-          .then(res => {updateColors(res.data)})
-          .catch(err => {console.error('ColorList Delete Update Error', err.message)})
-          setEditing(false);
+          .get("/api/colors")
+          .then(res => {
+            updateColors(res.data);
+          })
+          .catch(err => {
+            console.error("ColorList Delete Update Error", err.message);
+          });
+        setEditing(false);
       })
-      .catch(err => {console.error('ColorList Delete Error', err.message)})
+      .catch(err => {
+        console.error("ColorList Delete Error", err.message);
+      });
   };
-
 
   return (
     <div className="colors-wrap">
@@ -51,12 +62,14 @@ const ColorList = ({ colors, updateColors }) => {
         {colors.map(color => (
           <li key={color.color} onClick={() => editColor(color)}>
             <span>
-              <span className="delete" onClick={e => {
-                    e.stopPropagation();
-                    deleteColor(color)
-                  }
-                }>
-                  x
+              <span
+                className="delete"
+                onClick={e => {
+                  e.stopPropagation();
+                  deleteColor(color);
+                }}
+              >
+                x
               </span>{" "}
               {color.color}
             </span>

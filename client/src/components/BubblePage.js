@@ -8,16 +8,17 @@ const BubblePage = props => {
   const [colorList, setColorList] = useState([]);
 
   useEffect(() => {
-    localStorage.getItem('token') &&
-    axiosWithAuth()
-      .get('/colors')
-      .then(res => {
-        setColorList(res.data)
-      })
-      .catch(err => {
-        console.error('BubblePage Error', err.message);
-      })
-  }, [])
+    localStorage.getItem("token") &&
+      axiosWithAuth()
+        .get("/api/colors")
+        .then(res => {
+          console.log(res);
+          setColorList(res.data);
+        })
+        .catch(err => {
+          console.error("BubblePage Error", err.message);
+        });
+  }, []);
 
   return (
     <>
